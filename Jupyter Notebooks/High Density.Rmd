@@ -3,19 +3,75 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
 
 ```{r}
 library("TDA")
-Neach <- floor(1200 / 4)
-X1 <- cbind(rnorm(Neach, 1, .8), rnorm(Neach, 5, 0.8))
+#library("ncdf4")
+#library("psych")
+#library("reticulate")
+filename1<-"pca.csv"
+filename2<-"region55.csv"
+filename3<-"region65.csv"
+foldername<-"ECWMF Datasets"
+ncfpath1<-paste(getwd(),filename1,sep = "/")
+ncfpath2<-paste(getwd(),filename2,sep = "/")
+ncfpath3<-paste(getwd(),filename3,sep = "/")
+#data<-nc_open(ncfpath)
+#g<-9.80655
+
+#lonLength<-length(ncvar_get(data,"lon"))
+#latLength<-length(ncvar_get(data,"lat"))
+
+#geopotentialIsobaric<-ncvar_get(data,"Geopotential_isobaric")
+#geopotentialIsobaric500<-geopotentialIsobaric[,,8,]/g
+
+#geopotentialIsobaric500Reshaped<-matrix(geopotentialIsobaric500,nrow = 51,ncol = lonLength*latLength)
+
+
+#data_pca<-principal(geopotentialIsobaric500Reshaped,nfactors = 9)
+# oPCA<-prcomp(geopotentialIsobaric500Reshaped,center = TRUE,rank. = 9)
+# data_pca<-oPCA$x
+#pca<-import("sklearn")
+#source_python("pcaData.py")
+
+data_pca<-read.csv(file = ncfpath1,header = FALSE, sep = ",")
+data_55<-read.csv(file = ncfpath2,header = FALSE, sep = ",")
+data_65<-read.csv(file = ncfpath3,header = FALSE, sep = ",")
+
+
+#plot(Tree,type = "alpha",main = "alpha Tree (knn)")
+```
+```{r}
+X<-data_pca
+k<-4
+#Tree<-clusterTree(X,k,density = "knn")
+TreeKDE<-clusterTree(X,k,h=664 ,density = "kde")
+plot(TreeKDE,type = "alpha",main="alpha Tree (kde)")
+```
+```{r}
+TreeKDE$DataPoints
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+```{r}
+X<-data_55
+k<-2
+#Tree<-clusterTree(X,k,density = "knn")
+TreeKDE<-clusterTree(X,k,h=332 ,density = "kde")
+plot(TreeKDE,type = "alpha",main="alpha Tree (kde)")
+```
+```{r}
+TreeKDE$DataPoints
+```
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+```{r}
+X<-data_65
+k<-2
+#Tree<-clusterTree(X,k,density = "knn")
+TreeKDE<-clusterTree(X,k,h=664 ,density = "kde")
+plot(TreeKDE,type = "alpha",main="alpha Tree (kde)")
+```
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+```{r}
+TreeKDE$DataPoints
+```
 
