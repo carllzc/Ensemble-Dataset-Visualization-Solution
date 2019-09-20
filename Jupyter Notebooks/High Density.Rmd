@@ -12,10 +12,13 @@ library("TDA")
 filename1<-"pca.csv"
 filename2<-"region55.csv"
 filename3<-"region65.csv"
+filename4<-"syntheticTransformed.csv"
 foldername<-"ECWMF Datasets"
 ncfpath1<-paste(getwd(),filename1,sep = "/")
 ncfpath2<-paste(getwd(),filename2,sep = "/")
 ncfpath3<-paste(getwd(),filename3,sep = "/")
+ncfpath4<-paste(getwd(),filename4,sep = "/")
+
 #data<-nc_open(ncfpath)
 #g<-9.80655
 
@@ -37,41 +40,38 @@ ncfpath3<-paste(getwd(),filename3,sep = "/")
 data_pca<-read.csv(file = ncfpath1,header = FALSE, sep = ",")
 data_55<-read.csv(file = ncfpath2,header = FALSE, sep = ",")
 data_65<-read.csv(file = ncfpath3,header = FALSE, sep = ",")
-
-
+data_synthetic<-read.csv(file = ncfpath4,header = FALSE, sep = ",")
 #plot(Tree,type = "alpha",main = "alpha Tree (knn)")
 ```
 ```{r}
-X<-data_pca
-k<-4
+X<-data_synthetic[1]
+k<-10
 #Tree<-clusterTree(X,k,density = "knn")
-TreeKDE<-clusterTree(X,k,h=664 ,density = "kde")
-plot(TreeKDE,type = "alpha",main="alpha Tree (kde)")
-```
-```{r}
-TreeKDE$DataPoints
+Tree<-clusterTree(X,k,h=27,density = "kde",printProgress = FALSE)
+plot(Tree,type = "alpha",main="Kappa Tree (kde)")
 ```
 
 ```{r}
-X<-data_55
-k<-2
-#Tree<-clusterTree(X,k,density = "knn")
-TreeKDE<-clusterTree(X,k,h=332 ,density = "kde")
-plot(TreeKDE,type = "alpha",main="alpha Tree (kde)")
+Tree$density
 ```
 ```{r}
-TreeKDE$DataPoints
+Tree$DataPoints
+```
+```{r}
+data_synthetic[1]
 ```
 
 ```{r}
-X<-data_65
-k<-2
-#Tree<-clusterTree(X,k,density = "knn")
-TreeKDE<-clusterTree(X,k,h=664 ,density = "kde")
-plot(TreeKDE,type = "alpha",main="alpha Tree (kde)")
+library("graphics")
+Xlim <- c(-150,150)
+by <- 1
+Xseq <- seq(Xlim[1],by=by)
+KDE <- kde(X=data_synthetic[1],Grid = Xseq,h=53)
+KDE
 ```
 
-```{r}
-TreeKDE$DataPoints
-```
+
+
+
+
 
