@@ -44,10 +44,10 @@ data_synthetic<-read.csv(file = ncfpath4,header = FALSE, sep = ",")
 #plot(Tree,type = "alpha",main = "alpha Tree (knn)")
 ```
 ```{r}
-X<-data_synthetic[1]
+X<-data_synthetic
 k<-10
 #Tree<-clusterTree(X,k,density = "knn")
-Tree<-clusterTree(X,k,h=27,density = "kde",printProgress = FALSE)
+Tree<-clusterTree(X,k,h=38,density = "kde",printProgress = FALSE)
 plot(Tree,type = "alpha",main="Kappa Tree (kde)")
 ```
 
@@ -72,6 +72,19 @@ KDE
 
 
 
+```{r}
+unloadNamespace("tda")
+library("ks")
+X1 <- cbind(rnorm(300, 1, .8), rnorm(300, 5, 0.8))
+X2 <- cbind(rnorm(300, 3.5, .8), rnorm(300, 5, 0.8))
+X3 <- cbind(rnorm(300, 6, 1), rnorm(300, 1, 1))
+XX <- rbind(X1, X2, X3)
+k<-kde(data_synthetic[1:3])
+plot(k)
+```
 
 
+```{r}
+data_synthetic[1:2]
+```
 
